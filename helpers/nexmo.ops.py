@@ -1,12 +1,19 @@
-import os, sys, time, re
+from lib.env import env
+import os
+import sys
+import time
+import re
 from os.path import dirname
 import nexmo
 
-#clear for linux
-clear = lambda: os.system('clear')
+# clear for linux
 
-#verify if user execute this script from test directory
-if "helpers" not in os.path.abspath('.'): 
+
+def clear(): return os.system('clear')
+
+
+# verify if user execute this script from test directory
+if "helpers" not in os.path.abspath('.'):
     path = '.'
 else:
     path = '..'
@@ -14,8 +21,7 @@ else:
 directory = os.path.abspath(path)
 sys.path.insert(0, directory)
 
-#import local modules
-from lib.env import env
+# import local modules
 
 clear()
 envfile = env(directory+"/.env")
@@ -26,7 +32,7 @@ if envfile.exists():
     while option != "3":
         print("Nexmo Ops")
         print("1. Check credentials")
-        print("2. Send a SMS")
+        print("2. Send SMS")
         print("3. Exit")
         option = input("Enter your option: ")
         if option == "1":
@@ -36,23 +42,25 @@ if envfile.exists():
             #print(os.environ.get('NEXMO_API_KEY') + " " + os.environ.get('NEXMO_API_SECRET') + " " + os.environ.get('NEXMO_APPLICATION_ID') + " " + os.environ.get('NEXMO_PRIVATE_KEY_NAME'))
             try:
                 client = nexmo.Client(
-                    key = os.environ.get('NEXMO_API_KEY'),
-                    secret = os.environ.get('NEXMO_API_SECRET')
+                    key=os.environ.get('NEXMO_API_KEY'),
+                    secret=os.environ.get('NEXMO_API_SECRET')
                 )
                 result = client.get_balance()
                 print("Valid Key and secret credentials.")
                 if os.environ.get('NEXMO_APPLICATION_ID') is not None:
-                    private_key = envfile = env(directory + '/' + os.environ.get('NEXMO_PRIVATE_KEY_NAME'))
+                    private_key = envfile = env(
+                        directory + '/' + os.environ.get('NEXMO_PRIVATE_KEY_NAME'))
                     client = nexmo.Client(
-                        application_id = os.environ.get('NEXMO_APPLICATION_ID'),
-                        private_key = os.environ.get('NEXMO_PRIVATE_KEY_NAME')
+                        application_id=os.environ.get('NEXMO_APPLICATION_ID'),
+                        private_key=os.environ.get('NEXMO_PRIVATE_KEY_NAME')
                     )
                     print("Valid voice credentials")
             except nexmo.errors.AuthenticationError:
-                #print(sys.exc_info()[0].__dict__)
+                # print(sys.exc_info()[0].__dict__)
                 print("Authentication Error: invalid credentials")
             except FileNotFoundError:
-                print("Invalid Voice credentials: Your private key file path is invalid. Use absolute path")
+                print(
+                    "Invalid Voice credentials: Your private key file path is invalid. Use absolute path")
             except:
                 print(sys.exc_info()[0])
             finally:
@@ -63,12 +71,12 @@ if envfile.exists():
                 clear()
                 print("Send test sms")
                 to = input("Enter the destination number: ")
-                #clean the to param using regexp
-                to = re.sub(r'[\(\)\-\+]*','',to)
-                #print(to)
+                # clean the to param using regexp
+                to = re.sub(r'[\(\)\-\+]*', '', to)
+                # print(to)
                 client = nexmo.Client(
-                    key = os.environ.get('NEXMO_API_KEY'),
-                    secret = os.environ.get('NEXMO_API_SECRET')
+                    key=os.environ.get('NEXMO_API_KEY'),
+                    secret=os.environ.get('NEXMO_API_SECRET')
                 )
                 result = client.send_message(
                     {
