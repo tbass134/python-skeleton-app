@@ -56,7 +56,7 @@ def status():
 #For calls
 
 #Webhook for tracking an inbound call status
-@app.route('/webhooks/event', methods=['GET','POST'])
+@app.route('/webhooks/events', methods=['GET','POST'])
 def event():
     res = jsonify(request.json)
     print("Call Status Event handler")

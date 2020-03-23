@@ -65,7 +65,7 @@ if envfile.exists():
                 to = input("Enter the destination number: ")
                 #clean the to param using regexp
                 to = re.sub(r'[\(\)\-\+]*','',to)
-                print(to)
+                #print(to)
                 client = nexmo.Client(
                     key = os.environ.get('NEXMO_API_KEY'),
                     secret = os.environ.get('NEXMO_API_SECRET')

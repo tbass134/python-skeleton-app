@@ -1,4 +1,4 @@
-import os, sys, time
+import os, sys, time, re
 from os.path import dirname
 
 #clear for linux
@@ -50,6 +50,8 @@ def add_menu():
     global envfile
     print("Add .env variable")
     name = input("Enter the name (No spaces allowed): ")
+    #If user put spaces replace them with _
+    name = re.sub(r'[\s]+','_',name)
     value = input("Enter the value: ")
     envfile.add_param(name, value)
     envfile.update()

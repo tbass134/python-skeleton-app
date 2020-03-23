@@ -1,4 +1,4 @@
-import os, sys, time
+import os, sys, time, re
 from os.path import dirname
 
 #clear for linux
@@ -24,11 +24,14 @@ if envfile.exists():
     sys.exit()
 else:
     print("Nexmo Skeleton App")
-    print("Genral data - SMS Support")
+    print("General data - SMS Support")
     key = input("Enter the Api key: ")
     secret = input("Enter the Api secret: ")
     number = input("Enter the Nexmo Number: ")
+    #Removing special chars. whitespaces, parentesis, -, +
+    number = re.sub(r'[\s\(\)\-\+]*','',number)
     to_number = input("Enter Destination Number for testings: ")
+    to_number = re.sub(r'[\s\(\)\-\+]*','',to_number)
     envfile.add_param("NEXMO_API_KEY", key)
     envfile.add_param("NEXMO_API_SECRET", secret)
     envfile.add_param("NEXMO_NUMBER", number)
